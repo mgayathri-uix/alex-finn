@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vibe Coding Academy — Alex Finn</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Source+Code+Pro:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg: #0C0A14;
+    --surface: #13101F;
+    --surface2: #1A1628;
+    --indigo: #6366F1;
+    --indigo-light: #818CF8;
+    --indigo-pale: rgba(99,102,241,0.08);
+    --indigo-border: rgba(99,102,241,0.18);
+    --violet: #8B5CF6;
+    --pink: #EC4899;
+    --white: #F1F0FF;
+    --text: #A8A4C0;
+    --muted: #4A4466;
+    --rule: #1E1A2E;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: 'Outfit', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* aurora mesh background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 20% 20%, rgba(99,102,241,0.07) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 40% at 80% 70%, rgba(139,92,246,0.06) 0%, transparent 60%),
+      radial-gradient(ellipse 30% 30% at 60% 10%, rgba(236,72,153,0.04) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 52px;
+    background: rgba(12,10,20,0.9);
+    border-bottom: 1px solid var(--rule);
+    backdrop-filter: blur(16px);
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--white);
+    letter-spacing: -0.02em;
+  }
+
+  .logo-icon {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, var(--indigo), var(--violet));
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+  }
+
+  .logo span { color: var(--indigo-light); }
+
+  .nav-guarantee {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Source Code Pro', monospace;
+    font-size: 11px;
+    color: var(--text);
+    background: var(--indigo-pale);
+    border: 1px solid var(--indigo-border);
+    border-radius: 100px;
+    padding: 7px 16px;
+  }
+  .nav-guarantee .g { color: var(--indigo-light); font-weight: 500; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    padding: 120px 52px 0;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hero-inner {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 72px;
+    align-items: center;
+    flex: 1;
+    padding-bottom: 80px;
+  }
+
+  /* LEFT */
+  .hero-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Source Code Pro', monospace;
+    font-size: 11px;
+    color: var(--indigo-light);
+    letter-spacing: 0.08em;
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: up 0.5s 0.1s forwards;
+  }
+  .hero-kicker::before {
+    content: '//';
+    opacity: 0.5;
+  }
+
+  .hero-headline {
+    font-size: clamp(52px, 6.5vw, 90px);
+    font-weight: 900;
+    line-height: 0.96;
+    letter-spacing: -0.03em;
+    color: var(--white);
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: up 0.7s 0.2s forwards;
+  }
+
+  .hero-headline .grad {
+    background: linear-gradient(135deg, var(--indigo-light), var(--violet), var(--pink));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-headline .outline {
+    -webkit-text-stroke: 2px rgba(99,102,241,0.4);
+    color: transparent;
+  }
+
+  .hero-sub {
+    font-size: 17px;
+    font-weight: 300;
+    color: var(--text);
+    line-height: 1.78;
+    max-width: 520px;
+    margin-bottom: 44px;
+    opacity: 0;
+    animation: up 0.7s 0.32s forwards;
+  }
+  .hero-sub strong { color: var(--white); font-weight: 500; }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: linear-gradient(135deg, var(--indigo), var(--violet));
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 18px 36px;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: opacity 0.2s, transform 0.2s, box-shadow 0.2s;
+    opacity: 0;
+    animation: up 0.6s 0.44s forwards;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0.1);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .btn:hover::after { opacity: 1; }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 16px 48px rgba(99,102,241,0.3); }
+  .arr { transition: transform 0.2s; }
+  .btn:hover .arr { transform: translateX(4px); }
+
+  .hero-note {
+    font-family: 'Source Code Pro', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    margin-top: 14px;
+    opacity: 0;
+    animation: fadein 0.5s 0.7s forwards;
+  }
+  .hero-note span { color: var(--indigo-light); }
+
+  /* stat row */
+  .hero-stats {
+    display: flex;
+    gap: 36px;
+    margin-top: 44px;
+    padding-top: 32px;
+    border-top: 1px solid var(--rule);
+    opacity: 0;
+    animation: fadein 0.6s 0.8s forwards;
+  }
+
+  .hs {
+    display: flex;
+    flex-direction: column;
+  }
+  .hs-n {
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    background: linear-gradient(135deg, var(--indigo-light), var(--violet));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+  }
+  .hs-l {
+    font-family: 'Source Code Pro', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    margin-top: 4px;
+  }
+
+  /* RIGHT: 28-day guarantee card */
+  .guarantee-card {
+    opacity: 0;
+    animation: up 0.8s 0.3s forwards;
+  }
+
+  .g-card {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.4), 0 0 0 1px rgba(99,102,241,0.1);
+  }
+
+  .g-card-top {
+    background: linear-gradient(135deg, var(--indigo), var(--violet));
+    padding: 28px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .g-card-top::before {
+    content: '';
+    position: absolute;
+    top: -40px; left: -40px;
+    width: 120px; height: 120px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50%;
+  }
+
+  .g-card-top::after {
+    content: '';
+    position: absolute;
+    bottom: -30px; right: -20px;
+    width: 100px; height: 100px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 50%;
+  }
+
+  .g-days {
+    font-size: 72px;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    position: relative;
+    z-index: 1;
+  }
+
+  .g-days-label {
+    font-family: 'Source Code Pro', monospace;
+    font-size: 12px;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-top: 4px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .g-card-body {
+    padding: 24px 28px;
+  }
+
+  .g-promise {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--white);
+    text-align: center;
+    margin-bottom: 20px;
+    line-height: 1.4;
+  }
+
+  .g-promise span {
+    background: linear-gradient(135deg, var(--indigo-light), var(--violet));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .g-milestones {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: relative;
+  }
+
+  .g-milestones::before {
+    content: '';
+    position: absolute;
+    left: 11px;
+    top: 8px;
+    bottom: 8px;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--indigo), var(--violet), var(--pink));
+    opacity: 0.3;
+  }
+
+  .g-milestone {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 0;
+  }
+
+  .g-m-dot {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    position: relative;
+    z-index: 1;
+  }
+  .g-m-dot.done { background: var(--indigo); }
+  .g-m-dot.mid { background: var(--violet); }
+  .g-m-dot.end { background: linear-gradient(135deg, var(--violet), var(--pink)); }
+
+  .g-m-day {
+    font-family: 'Source Code Pro', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    min-width: 42px;
+  }
+
+  .g-m-text {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    flex: 1;
+  }
+
+  .g-card-footer {
+    padding: 16px 28px 24px;
+    border-top: 1px solid var(--rule);
+    text-align: center;
+  }
+
+  .g-guarantee {
+    font-family: 'Source Code Pro', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    line-height: 1.7;
+  }
+  .g-guarantee span { color: var(--indigo-light); }
+
+  /* ── MIDDLE: STUCK VS BUILDING ── */
+  .unstuck {
+    padding: 100px 52px;
+    border-top: 1px solid var(--rule);
+    position: relative;
+    z-index: 1;
+  }
+
+  .unstuck-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: end;
+    margin-bottom: 60px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .unstuck-headline {
+    font-size: clamp(38px, 4.5vw, 64px);
+    font-weight: 900;
+    line-height: 1.0;
+    letter-spacing: -0.03em;
+  }
+  .unstuck-headline .grad {
+    background: linear-gradient(135deg, var(--indigo-light), var(--violet));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .unstuck-desc {
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--text);
+    line-height: 1.8;
+    max-width: 380px;
+  }
+
+  /* two column hell vs vibe */
+  .hv-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    background: var(--rule);
+  }
+
+  .hv-col {
+    background: var(--bg);
+    padding: 48px 44px;
+  }
+
+  .hv-col.vibe {
+    background: var(--indigo-pale);
+    border: 1px solid var(--indigo-border);
+  }
+
+  .hv-label {
+    font-family: 'Source Code Pro', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  .hv-label.hell { color: var(--muted); }
+  .hv-label.vibe-l { color: var(--indigo-light); }
+
+  .hv-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .hv-item:last-child { border-bottom: none; }
+
+  .hv-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .hv-icon.x { background: rgba(255,255,255,0.04); }
+  .hv-icon.check { background: rgba(99,102,241,0.15); }
+
+  .hv-text {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.6;
+  }
+  .hv-col:not(.vibe) .hv-text { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--rule); }
+  .hv-col.vibe .hv-text { color: var(--white); }
+
+  /* ── CLIFFHANGER ── */
+  .cliff {
+    padding: 100px 52px;
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid var(--rule);
+  }
+
+  /* gradient orb bg */
+  .cliff::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(99,102,241,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .cliff-inner {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .cliff-kicker {
+    font-family: 'Source Code Pro', monospace;
+    font-size: 11px;
+    color: var(--indigo-light);
+    letter-spacing: 0.08em;
+    margin-bottom: 20px;
+  }
+
+  .cliff-headline {
+    font-size: clamp(44px, 5.5vw, 76px);
+    font-weight: 900;
+    line-height: 0.97;
+    letter-spacing: -0.03em;
+    color: var(--white);
+    margin-bottom: 24px;
+  }
+  .cliff-headline .grad {
+    background: linear-gradient(135deg, var(--indigo-light), var(--violet), var(--pink));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .cliff-body {
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--text);
+    line-height: 1.8;
+    margin-bottom: 36px;
+    max-width: 420px;
+  }
+  .cliff-body strong { color: var(--white); font-weight: 500; }
+
+  .cliff-note {
+    display: block;
+    font-family: 'Source Code Pro', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    margin-top: 14px;
+  }
+  .cliff-note span { color: var(--indigo-light); }
+
+  /* blurred Claude Code chat */
+  .chat-wrap {
+    position: relative;
+  }
+
+  .chat-window {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.4);
+  }
+
+  .chat-chrome {
+    padding: 14px 20px;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--rule);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .chat-dots { display: flex; gap: 6px; }
+  .chat-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .chat-dot:nth-child(1) { background: #EF4444; }
+  .chat-dot:nth-child(2) { background: #F59E0B; }
+  .chat-dot:nth-child(3) { background: #22C55E; }
+
+  .chat-title {
+    font-family: 'Source Code Pro', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    flex: 1;
+    text-align: center;
+  }
+
+  .chat-body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    filter: blur(5px);
+    opacity: 0.2;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  .chat-msg {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .chat-msg.user { flex-direction: row-reverse; }
+
+  .chat-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .chat-avatar.ai { background: linear-gradient(135deg, var(--indigo), var(--violet)); color: #fff; }
+  .chat-avatar.user { background: var(--surface2); color: var(--text); font-size: 11px; }
+
+  .chat-bubble {
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 13px;
+    line-height: 1.6;
+    max-width: 80%;
+  }
+
+  .chat-bubble.ai {
+    background: var(--surface2);
+    color: var(--text);
+    border: 1px solid var(--rule);
+  }
+
+  .chat-bubble.user {
+    background: var(--indigo-pale);
+    border: 1px solid var(--indigo-border);
+    color: var(--indigo-light);
+  }
+
+  .chat-code {
+    background: rgba(0,0,0,0.3);
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-family: 'Source Code Pro', monospace;
+    font-size: 11px;
+    color: var(--indigo-light);
+    margin-top: 8px;
+    line-height: 1.7;
+  }
+
+  .chat-overlay {
+    position: absolute;
+    inset: 0;
+    top: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 12px;
+    background: rgba(12,10,20,0.7);
+    backdrop-filter: blur(2px);
+    border-radius: 0 0 16px 16px;
+  }
+
+  .lock-icon { font-size: 24px; }
+
+  .lock-label {
+    font-size: 14px;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--indigo-light), var(--violet));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.01em;
+  }
+
+  .lock-sub {
+    font-family: 'Source Code Pro', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes up {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: none; }
+  }
+  @keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 0.65s ease, transform 0.65s ease;
+  }
+  .reveal.on { opacity: 1; transform: none; }
+  .d1 { transition-delay: 0.12s; }
+  .d2 { transition-delay: 0.24s; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">
+    <div class="logo-icon">✦</div>
+    Vibe Coding <span>Academy</span>
+  </div>
+  <div class="nav-guarantee">
+    <span class="g">28-day</span> ship guarantee or your money back
+  </div>
+</nav>
+
+<!-- ① HERO -->
+<section class="hero">
+  <div class="hero-inner">
+
+    <div class="hero-left">
+      <div class="hero-kicker">vibe_coding_academy — by Alex Finn</div>
+
+      <h1 class="hero-headline">
+        Code With<br>
+        <span class="grad">Confidence.</span><br>
+        Build With<br>
+        <span class="outline">Purpose.</span>
+      </h1>
+
+      <p class="hero-sub">
+        Vibe Coding Academy teaches you how to write clean, functional code and build projects you're actually proud of — <strong>at your own pace, with real support.</strong> Your first AI app ships in 28 days. Guaranteed.
+      </p>
+
+      <a href="#" class="btn">
+        Join Vibe Coding Academy <span class="arr">→</span>
+      </a>
+      <div class="hero-note">// <span>$300K ARR</span> built solo with Claude Code · zero prior experience needed</div>
+
+      <div class="hero-stats">
+        <div class="hs">
+          <div class="hs-n">$300K</div>
+          <div class="hs-l">ARR // SOLO BUILT</div>
+        </div>
+        <div class="hs">
+          <div class="hs-n">55K+</div>
+          <div class="hs-l">YOUTUBE SUBS</div>
+        </div>
+        <div class="hs">
+          <div class="hs-n">28-Day</div>
+          <div class="hs-l">SHIP GUARANTEE</div>
+        </div>
+        <div class="hs">
+          <div class="hs-n">320K</div>
+          <div class="hs-l">X FOLLOWERS</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 28-DAY GUARANTEE CARD -->
+    <div class="guarantee-card">
+      <div class="g-card">
+        <div class="g-card-top">
+          <div class="g-days">28</div>
+          <div class="g-days-label">Days to Shipped</div>
+        </div>
+
+        <div class="g-card-body">
+          <div class="g-promise">
+            From <span>zero experience</span> to a live AI app people actually pay for.
+          </div>
+
+          <div class="g-milestones">
+            <div class="g-milestone">
+              <div class="g-m-dot done">✓</div>
+              <div class="g-m-day">Day 1</div>
+              <div class="g-m-text">Claude Code + OpenClaw set up & running</div>
+            </div>
+            <div class="g-milestone">
+              <div class="g-m-dot done">✓</div>
+              <div class="g-m-day">Day 7</div>
+              <div class="g-m-text">First prompts dialed in, core app building</div>
+            </div>
+            <div class="g-milestone">
+              <div class="g-m-dot mid">◎</div>
+              <div class="g-m-day">Day 14</div>
+              <div class="g-m-text">Stripe payments, auth, database connected</div>
+            </div>
+            <div class="g-milestone">
+              <div class="g-m-dot mid">◎</div>
+              <div class="g-m-day">Day 21</div>
+              <div class="g-m-text">Advanced AI app deployed live on Vercel</div>
+            </div>
+            <div class="g-milestone">
+              <div class="g-m-dot end">🚀</div>
+              <div class="g-m-day">Day 28</div>
+              <div class="g-m-text">Shipped. Real users. Real product. Yours.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="g-card-footer">
+          <div class="g-guarantee">Ship in 28 days or <span>full refund.</span><br>Alex's personal guarantee.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ② TUTORIAL HELL → VIBE -->
+<section class="unstuck">
+  <div class="unstuck-header reveal">
+    <h2 class="unstuck-headline">
+      Out of Tutorial<br>
+      Hell. Into the<br>
+      <span class="grad">Vibe.</span>
+    </h2>
+    <p class="unstuck-desc">
+      Learning to code shouldn't feel like decoding ancient texts. Alex built the Academy around one idea — that anyone can learn to build real things when the teaching is clear, the community is supportive, and the vibe is right.
+    </p>
+  </div>
+
+  <div class="hv-grid">
+    <div class="hv-col">
+      <div class="hv-label hell">// Tutorial Hell</div>
+
+      <div class="hv-item">
+        <div class="hv-icon x">✕</div>
+        <div class="hv-text">Watching the same beginner videos for the 4th time</div>
+      </div>
+      <div class="hv-item">
+        <div class="hv-icon x">✕</div>
+        <div class="hv-text">Getting stuck in error loops with no one to help</div>
+      </div>
+      <div class="hv-item">
+        <div class="hv-icon x">✕</div>
+        <div class="hv-text">Building toy projects that go nowhere</div>
+      </div>
+      <div class="hv-item">
+        <div class="hv-icon x">✕</div>
+        <div class="hv-text">Figuring out Claude Code prompts alone by trial and error</div>
+      </div>
+    </div>
+
+    <div class="hv-col vibe">
+      <div class="hv-label vibe-l">// The Vibe</div>
+
+      <div class="hv-item">
+        <div class="hv-icon check">✓</div>
+        <div class="hv-text">Alex's exact Claude Code workflow — step by step, no gaps</div>
+      </div>
+      <div class="hv-item">
+        <div class="hv-icon check">✓</div>
+        <div class="hv-text">A system for fixing any error — never get stuck again</div>
+      </div>
+      <div class="hv-item">
+        <div class="hv-icon check">✓</div>
+        <div class="hv-text">Real apps on Next.js + Supabase + Stripe + Vercel</div>
+      </div>
+      <div class="hv-item">
+        <div class="hv-icon check">✓</div>
+        <div class="hv-text">Weekly office hours + a community shipping in public</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ③ CLIFFHANGER -->
+<section class="cliff">
+  <div class="cliff-inner">
+    <div class="reveal">
+      <div class="cliff-kicker">// inside_the_academy</div>
+      <h2 class="cliff-headline">
+        Your First<br>
+        App.<br>
+        <span class="grad">28 Days.</span>
+      </h2>
+      <p class="cliff-body">
+        <strong>Alex hands you the exact Claude Code + launch system he used to build Creator Buddy</strong> — a $300K ARR app he built completely solo. The prompts, the workflows, the GTM playbook. All of it.
+      </p>
+      <a href="#" class="btn">Join Vibe Coding Academy →</a>
+      <span class="cliff-note">// weekly calls · community · <span>28-day money back guarantee</span></span>
+    </div>
+
+    <!-- blurred Claude Code chat -->
+    <div class="chat-wrap reveal d2">
+      <div class="chat-window">
+        <div class="chat-chrome">
+          <div class="chat-dots">
+            <div class="chat-dot"></div>
+            <div class="chat-dot"></div>
+            <div class="chat-dot"></div>
+          </div>
+          <div class="chat-title">// claude_code_session — MEMBERS ONLY</div>
+        </div>
+
+        <div class="chat-body">
+          <div class="chat-msg user">
+            <div class="chat-avatar user">AF</div>
+            <div class="chat-bubble user">Build me a Stripe-integrated SaaS dashboard with user auth and a subscription wall</div>
+          </div>
+
+          <div class="chat-msg">
+            <div class="chat-avatar ai">✦</div>
+            <div class="chat-bubble ai">
+              I'll build that for you. Here's what I'm creating:
+              <div class="chat-code">
+                // Next.js 14 + Supabase + Stripe<br>
+                ✓ Auth with protected routes<br>
+                ✓ Stripe checkout + webhooks<br>
+                ✓ Subscription tier gating<br>
+                ✓ Dashboard UI + user settings
+              </div>
+            </div>
+          </div>
+
+          <div class="chat-msg user">
+            <div class="chat-avatar user">AF</div>
+            <div class="chat-bubble user">Add a usage tracker and send a weekly digest email</div>
+          </div>
+
+          <div class="chat-msg">
+            <div class="chat-avatar ai">✦</div>
+            <div class="chat-bubble ai">
+              Done. Usage tracking added to Supabase + Resend email integration wired up. Your app is ready to deploy.
+            </div>
+          </div>
+        </div>
+
+        <div class="chat-overlay">
+          <div class="lock-icon">🔒</div>
+          <div class="lock-label">Members Only</div>
+          <div class="lock-sub">// full curriculum + weekly calls inside</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const els = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver(e => e.forEach(x => x.isIntersecting && x.target.classList.add('on')), { threshold: 0.08 });
+  els.forEach(el => io.observe(el));
+</script>
+</body>
+</html>
